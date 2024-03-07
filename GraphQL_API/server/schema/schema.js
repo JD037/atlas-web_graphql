@@ -1,4 +1,7 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt } = require('graphql');
+// server/schema/schema.js
+
+const graphql = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLInt } = graphql;
 
 const TaskType = new GraphQLObjectType({
   name: 'Task',
@@ -6,8 +9,8 @@ const TaskType = new GraphQLObjectType({
     id: { type: GraphQLString },
     title: { type: GraphQLString },
     weight: { type: GraphQLInt },
-    description: { type: GraphQLString },
-  },
+    description: { type: GraphQLString }
+  }
 });
 
-module.exports = { TaskType };
+module.exports = TaskType;
