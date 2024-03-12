@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { flowRight as compose } from 'lodash';
 import { getProjectsQuery, addTaskMutation, getTasksQuery } from '../queries/queries';
 
 function AddTask(props) {
   const [state, setState] = useState({
     title: '',
-    weight: '',
+    weight: 1,
     description: '',
     projectId: ''
   });
@@ -25,7 +26,7 @@ function AddTask(props) {
     }
   }
 
-  const submitForm = e => {
+  function submitForm(e) {
     e.preventDefault();
     props.addTaskMutation({
       variables: {
@@ -36,46 +37,26 @@ function AddTask(props) {
       },
       refetchQueries: [{ query: getTasksQuery }]
     });
-    setState({
-      title: '',
-      weight: '',
-      description: '',
-      projectId: ''
-    });
-  };
+  }
 
   return (
     <form id="add-task" onSubmit={submitForm}>
       <div className="field">
-        <label>Task Title:</label>
-        <input
-          type="text"
-          value={state.title}
-          onChange={e => setState({ ...state, title: e.target.value })}
-        />
+        <label>Task title:</label>
+        <input type="text" onChange={(e) => setState({ ...state, title: e.target.value })} />
       </div>
       <div className="field">
-        <label>Task Weight:</label>
-        <input
-          type="number"
-          value={state.weight}
-          onChange={e => setState({ ...state, weight: e.target.value })}
-        />
+        <label>Weight:</label>
+        <input type="number" onChange={(e) => setState({ ...state, weight: e.target.value })} />
       </div>
       <div className="field">
-        <label>Task Description:</label>
-        <textarea
-          value={state.description}
-          onChange={e => setState({ ...state, description: e.target.value })}
-        ></textarea>
+        <label>Description:</label>
+        <textarea onChange={(e) => setState({ ...state, description: e.target.value })}></textarea>
       </div>
       <div className="field">
         <label>Project:</label>
-        <select
-          value={state.projectId}
-          onChange={e => setState({ ...state, projectId: e.target.value })}
-        >
-          <option>Select Project</option>
+        <select onChange={(e) => setState({ ...state, projectId: e.target.value })}>
+          <option>Select project</option>
           {displayProjects()}
         </select>
       </div>
@@ -85,6 +66,6 @@ function AddTask(props) {
 }
 
 export default compose(
-  graphql(getProjectsQuery, { name: 'getProjectsQuery' }),
-  graphql(addTaskMutation, { name: 'addTaskMutation' })
+  graphql(getProjectsQuery, { name: "getProjectsQuery" }),
+  graphql(addTaskMutation, { name: "addTaskMutation" })
 )(AddTask);

@@ -4,22 +4,18 @@ import { getTasksQuery } from '../queries/queries';
 import TaskDetails from './TaskDetails';
 
 function TaskList(props) {
-  const [state, setState] = useState({ selected: null });
+  const [state, setState] = useState({
+    selected: null
+  });
 
   function displayTasks() {
     var data = props.data;
-
     if (data.loading) {
       return <div>Loading tasks...</div>;
     } else {
       return data.tasks.map(task => {
         return (
-          <li
-            key={task.id}
-            onClick={e => {
-              setState({ selected: task.id });
-            }}
-          >
+          <li key={task.id} onClick={(e) => setState({ selected: task.id })}>
             {task.title}
           </li>
         );
@@ -29,8 +25,7 @@ function TaskList(props) {
 
   return (
     <div>
-      <h3>Tasks List</h3>
-      <ul>{displayTasks()}</ul>
+      <ul id="task-list">{displayTasks()}</ul>
       <TaskDetails taskId={state.selected} />
     </div>
   );

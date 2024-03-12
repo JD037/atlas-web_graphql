@@ -1,7 +1,6 @@
 import React from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-
 import TaskList from './components/TaskList';
 import AddTask from './components/AddTask';
 import AddProject from './components/AddProject';
@@ -14,10 +13,10 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div id="main">
-        <h1>GraphQL Tasks</h1>
+        <h1>Holberton school tasks</h1>
         <TaskList />
-        <AddTask />
         <AddProject />
+        <AddTask />
       </div>
     </ApolloProvider>
   );
