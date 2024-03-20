@@ -1,0 +1,12 @@
+mutation {
+  addTask(
+    title: "GraphQL is neat",
+    weight: 5,
+    description: "Testing the Test Tester",
+    projectId: "0x3546"
+  ) {
+    title
+    weight
+    description
+  }
+}
