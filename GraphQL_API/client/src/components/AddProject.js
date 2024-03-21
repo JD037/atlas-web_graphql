@@ -1,61 +1,68 @@
 import React, { useState } from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { addProjectMutation, getProjectsQuery } from '../queries/queries';
 
+
 function AddProject(props) {
-  const [state, setState] = useState({
+  const [inputsProject, setInputsProject] = useState({
     title: '',
-    weight: '',
+    weight: 1,
     description: ''
+
   });
 
-  const submitForm = e => {
+  const handleChange = (e) => {
+    const newInputsProject = {
+      ...inputsProject
+    };
+    if (e.target.name === "weight") newInputsProject[e.target.name] = parseInt(e.target.value)
+    else newInputsProject[e.target.name] = e.target.value
+    setInputsProject(newInputsProject)
+  }
+
+  const submitForm1 = (e) => {
     e.preventDefault();
     props.addProjectMutation({
       variables: {
-        title: state.title,
-        weight: parseInt(state.weight),
-        description: state.description
+        title: inputsProject.title,
+        weight: inputsProject.weight,
+        description: inputsProject.description
       },
       refetchQueries: [{ query: getProjectsQuery }]
-    });
-    setState({
-      title: '',
-      weight: '',
-      description: ''
     });
   };
 
   return (
-    <form id="add-project" onSubmit={submitForm}>
+    <form className="project" id="add-project" onSubmit = {submitForm1}>
       <div className="field">
-        <label>Project Title:</label>
+        <label>Project title:</label>
         <input
           type="text"
-          value={state.title}
-          onChange={e => setState({ ...state, title: e.target.value })}
+          name="title"
+          onChange={handleChange}
+          value={inputsProject.title}
         />
       </div>
       <div className="field">
-        <label>Project Weight:</label>
+        <label>Weight:</label>
         <input
           type="number"
-          value={state.weight}
-          onChange={e => setState({ ...state, weight: e.target.value })}
+          name="weight"
+          onChange={handleChange}
+          value={inputsProject.weight}
         />
       </div>
       <div className="field">
-        <label>Project Description:</label>
+        <label>description:</label>
         <textarea
-          value={state.description}
-          onChange={e => setState({ ...state, description: e.target.value })}
-        ></textarea>
+          name="description"
+          onChange={handleChange}
+          value={inputsProject.description}
+        />
       </div>
-      <button>+</button>
+      <button> + </button>
     </form>
   );
 }
 
-export default compose(
-  graphql(addProjectMutation, { name: 'addProjectMutation' })
-)(AddProject);
+export default graphql(addProjectMutation, { name: "addProjectMutation" })(AddProject);
